@@ -7,7 +7,6 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types.input_file import FSInputFile
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
 from dotenv import load_dotenv
 import os
 from openai import AsyncOpenAI
@@ -79,10 +78,10 @@ async def rag(question: str):
     # Собираем номера страниц из полей 'str' и 'str_2' | Collect page numbers from 'str' and 'str_2' fields
     pages_list = []
     for res in search_result:
-        if res.payload.get("str"):
-            pages_list.append(str(res.payload.get("str")))
-        if res.payload.get("str_2"):
-            pages_list.append(str(res.payload.get("str_2")))
+        if res.payload.get("skr"):
+            pages_list.append(int(res.payload.get("skr")))
+        if res.payload.get("skr_2"):
+            pages_list.append(int(res.payload.get("skr_2")))
     return {"answer": combined_answer, "pages": pages_list}
 
 async def get_model_answer(question: str, answer_context: str, conversation_history: str):
@@ -187,8 +186,7 @@ async def handle_query(message: types.Message, state: FSMContext):
         # Выводим скриншоты страниц из PDF | Send PDF page screenshots
         for page in pages_list:
             try:
-                page_number = int(page)
-                images = convert_from_path(PDF_FILE_PATH, first_page=page_number, last_page=page_number)
+                images = convert_from_path(PDF_FILE_PATH, first_page=page, last_page=page)
                 if images:
                     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
                         images[0].save(tmp, format='JPEG')
