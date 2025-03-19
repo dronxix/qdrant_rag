@@ -1,0 +1,7 @@
+aiogram
+httpx
+qdrant-client
+python-dotenv
+pdf2image
+dotenv
+openai
