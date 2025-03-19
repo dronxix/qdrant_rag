@@ -75,8 +75,6 @@ docker run --network host -v C:\path\to\your\folder\.env:/app/.env tg_bot
 
 ---
 
-## English Version
-
 # Telegram Bot with RAG System for Specific Files
 
 ## Description
